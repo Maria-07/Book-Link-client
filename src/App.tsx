@@ -1,5 +1,11 @@
+import MainLayout from './layouts/MainLayout';
+
 function App() {
-  return <div className="font-bold">hello</div>;
+  return (
+    <div>
+      <MainLayout></MainLayout>
+    </div>
+  );
 }
 
 export default App;
