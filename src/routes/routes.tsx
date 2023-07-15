@@ -29,16 +29,17 @@ const routes = createBrowserRouter([
         path: '/wish-list',
         element: <WishList />,
       },
+      {
+        path: '/signup',
+        element: <SignUp />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
     ],
   },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/signup',
-    element: <SignUp />,
-  },
+
   {
     path: '*',
     element: <NotFound />,
