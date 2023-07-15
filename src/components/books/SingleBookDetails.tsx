@@ -1,4 +1,4 @@
-import { Avatar, Space, Tabs } from 'antd';
+import { Avatar, Tabs } from 'antd';
 import { FaFacebookF, FaInstagram, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { BsPersonCircle } from 'react-icons/bs';
 
