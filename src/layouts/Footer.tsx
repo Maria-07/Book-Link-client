@@ -1,39 +1,64 @@
 import { RiFacebookBoxFill, RiInstagramLine } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 export default function Footer() {
   const date = new Date();
   const year = date.getFullYear();
 
   return (
-    <div className="bg-[#242630] text-secondary p-20">
-      <div className="flex justify-between">
-        <div>
-          <img className="h-10" src={''} alt="Logo" />
+    <div className="bg-primary text-secondary p-20">
+      <div className="flex flex-wrap justify-between gap-10">
+        <div className="my-auto">
+          <p>Privacy Policy</p>
+          <p>Terms & Condition</p>
+          <p className="my-10 text-gray-400"> &#169; BookLink {year}</p>
         </div>
-        <div className="flex gap-20">
-          <ul className="space-y-2">
-            <li>Upcoming</li>
-            <li>Shipping</li>
-            <li>How it works</li>
-          </ul>
-          <ul className="space-y-2">
-            <li>Support</li>
-            <li>Careers</li>
-          </ul>
-          <ul className="space-y-2">
-            <li>List your gear</li>
-            <li>Contact team</li>
-          </ul>
-        </div>
-        <div className="flex gap-2 text-2xl">
-          <RiFacebookBoxFill />
-          <RiInstagramLine />
+        <div className="mx-auto my-auto">
+          <div className="text-white font-secondary font-medium text-[25px] ">
+            Book<span className="text-popover">Link</span>
+          </div>
+        </div>{' '}
+        <div className="flex justify-between gap-10 flex-wrap">
+          <div className=" ">
+            <div className="flex items-center gap-4 my-5 flex-wrap">
+              <Link to={'#'} className="hover:text-popover">
+                Upcoming
+              </Link>
+
+              <Link to={'#'} className="hover:text-popover">
+                Shipping
+              </Link>
+
+              <Link to={'#'} className="hover:text-popover">
+                How it works
+              </Link>
+            </div>
+            <div className="flex items-center gap-4 my-5 flex-wrap">
+              <Link to={'#'} className="hover:text-popover">
+                Support
+              </Link>
+              <Link to={'#'} className="hover:text-popover">
+                Careers
+              </Link>
+            </div>
+            <div className="flex items-center gap-4 my-5 flex-wrap">
+              {' '}
+              <Link to={'#'} className="hover:text-popover">
+                List your gear
+              </Link>
+              <Link to={'#'} className="hover:text-popover">
+                Contact team
+              </Link>
+            </div>
+
+            <div className="flex gap-2 text-2xl">
+              <RiFacebookBoxFill />
+              <RiInstagramLine />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="flex w-full mt-20 gap-5">
-        <p>Privacy Policy</p>
-        <p>Terms & Condition</p>
-        <p className="ml-auto"> &#169; TechNet {year}</p>
-      </div>
+
+      <div className="flex items-center justify-center mt-20 gap-5"></div>
     </div>
   );
 }
