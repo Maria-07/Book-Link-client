@@ -1,6 +1,27 @@
-import AllBook from '../../components/books/AllBook';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { useEffect, useState } from 'react';
+import Book from '../../components/Home/Book';
+import { useGetBooksQuery } from '../../redux/features/books/booksApi';
+import { IBook } from '../../types/globalType';
+import AddNewBook from '../../components/books/AddNewBook';
 
 const AllBooks = () => {
+  const [bookData, setBookData] = useState([]);
+  const { data, isLoading, error } = useGetBooksQuery(undefined);
+
+  useEffect(() => {
+    console.log('all books data', data);
+    setBookData(data?.data);
+  }, [data]);
+
+  const [addBook, setAddBook] = useState(false);
+  const handleAddBook = () => {
+    setAddBook(!addBook);
+  };
+
   return (
     <div className="view-part mx-auto my-16">
       <div className="flex gap=2 sm:flex-nowrap flex-wrap">
@@ -40,9 +61,27 @@ const AllBooks = () => {
           </button>
         </div>
         <div className="mx-auto">
-          <AllBook></AllBook>
+          <div className="flex items-center justify-between px-4">
+            <h1 className="text-[18px] font-medium">All Books</h1>
+            <button
+              onClick={handleAddBook}
+              className="px-3 py-1 border rounded-md leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
+            >
+              Add New Book
+            </button>
+          </div>
+          {/* <AllBook></AllBook> */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 mx-5 gap-5">
+            {bookData?.map((book: IBook) => (
+              <Book book={book} key={book._id} />
+            ))}
+          </div>
         </div>
       </div>
+
+      {addBook && (
+        <AddNewBook handleClose={handleAddBook} clicked={addBook}></AddNewBook>
+      )}
     </div>
   );
 };

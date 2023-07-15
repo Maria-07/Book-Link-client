@@ -3,7 +3,6 @@ import { LuLanguages } from 'react-icons/lu';
 import { BiShoppingBag } from 'react-icons/bi';
 import CustomLink from '../shared/CustomLink';
 import { useState } from 'react';
-import SignUp from '../pages/SignUp/SignUp';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -56,12 +55,6 @@ const Navbar = () => {
           </CustomLink>
         </div>
       </div>
-
-      {/* {signUp && (
-        <div>
-          <SignUp handleClose={handleSignUp} clicked={signUp}></SignUp>
-        </div>
-      )} */}
     </>
   );
 };
