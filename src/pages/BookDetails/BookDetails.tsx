@@ -1,5 +1,11 @@
+import SingleBookDetails from '../../components/books/SingleBookDetails';
+
 const BookDetails = () => {
-  return <div>Book Details</div>;
+  return (
+    <div>
+      <SingleBookDetails></SingleBookDetails>
+    </div>
+  );
 };
 
 export default BookDetails;

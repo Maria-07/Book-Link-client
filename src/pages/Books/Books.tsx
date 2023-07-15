@@ -1,5 +1,9 @@
 const Books = () => {
-  return <div>ALl Books Here</div>;
+  return (
+    <div className="flex items-center justify-center view-part">
+      ALl Books Here
+    </div>
+  );
 };
 
 export default Books;

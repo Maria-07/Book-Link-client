@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import '../styles/navbar.css';
 import { LuLanguages } from 'react-icons/lu';
 import { BiShoppingBag } from 'react-icons/bi';

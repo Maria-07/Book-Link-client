@@ -12,7 +12,7 @@ export default function Footer() {
           <p>Terms & Condition</p>
           <p className="my-10 text-gray-400"> &#169; BookLink {year}</p>
         </div>
-        <div className="mx-auto my-auto">
+        <div className="sm:mx-auto my-auto">
           <div className="text-white font-secondary font-medium text-[25px] ">
             Book<span className="text-popover">Link</span>
           </div>
