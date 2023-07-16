@@ -15,6 +15,11 @@ const bookApi = api.injectEndpoints({
       query: () => '/books?page=1&limit=10&Order=desc&sortBy=createdAt',
     }),
 
+    //* get searched book
+    getSearchedBook: builder.query({
+      query: (data) => `/books?searchTerm=${data}`,
+    }),
+
     //* Post a review
     postReview: builder.mutation({
       query: ({ id, data }) => ({
@@ -39,4 +44,5 @@ export const {
   useGetReviewQuery,
   usePostReviewMutation,
   useGetNewBooksQuery,
+  useGetSearchedBookQuery,
 } = bookApi;

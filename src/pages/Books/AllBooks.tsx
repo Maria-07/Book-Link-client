@@ -1,12 +1,18 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import Book from '../../components/Home/Book';
-import { useGetBooksQuery } from '../../redux/features/books/booksApi';
+import {
+  useGetBooksQuery,
+  useGetSearchedBookQuery,
+} from '../../redux/features/books/booksApi';
 import { IBook } from '../../types/globalType';
 import AddNewBook from '../../components/books/AddNewBook';
+import { BiSearchAlt } from 'react-icons/bi';
 
 const AllBooks = () => {
   const [bookData, setBookData] = useState([]);
-  const { data, isLoading, error } = useGetBooksQuery(undefined);
+  const [search, setSearch] = useState('');
+
+  const { data } = useGetSearchedBookQuery(search);
 
   useEffect(() => {
     console.log('all books data', data);
@@ -22,15 +28,17 @@ const AllBooks = () => {
     <div className="view-part mx-auto my-16">
       <div className="flex gap=2 sm:flex-nowrap flex-wrap">
         <div className="sm:border-r-[1px] px-4 mx-auto">
-          <div className="mb-10">
+          <div className="mb-10 flex">
             <input
               placeholder="search here"
               type="text"
               className="border py-[6px] px-2 text-base "
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
             />
-            <button className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary">
-              Search
-            </button>
+
+            <BiSearchAlt className="text-4xl p-1  bg-popover shadow-md hover:bg-[#804769] text-secondary " />
           </div>
 
           <hr />
@@ -56,6 +64,7 @@ const AllBooks = () => {
             Filter
           </button>
         </div>
+        {/* //! show all books in a card */}
         <div className="mx-auto">
           <div className="flex items-center justify-between px-4">
             <h1 className="text-[18px] font-medium">All Books</h1>
