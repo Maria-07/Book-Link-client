@@ -2,14 +2,54 @@
 import { Avatar, Tabs } from 'antd';
 import { FaFacebookF, FaInstagram, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { BsPersonCircle } from 'react-icons/bs';
-import { useSingleBookQuery } from '../../redux/features/books/booksApi';
+import {
+  useGetReviewQuery,
+  usePostReviewMutation,
+  useSingleBookQuery,
+} from '../../redux/features/books/booksApi';
 import { useParams } from 'react-router-dom';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import TextArea from 'antd/es/input/TextArea';
 
 const SingleBookDetails = () => {
-  // const { id } = useParams();
-  // console.log(id);
+  const { id } = useParams();
+  console.log(id);
 
   // const { data, isLoading, error } = useSingleBookQuery(id);
+
+  //! Review Section
+
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const { data, error } = useGetReviewQuery(id, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 30000,
+  });
+
+  //! Post review
+  const [postReview, { isError, isLoading, isSuccess }] =
+    usePostReviewMutation();
+  console.log(' Data', data);
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const options = {
+      id: id,
+      data: { reviews: inputValue },
+    };
+
+    console.log(options);
+
+    postReview(options);
+    setInputValue('');
+  };
+
+  console.log(isLoading, error);
+
+  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(event.target.value);
+  };
 
   return (
     <>
@@ -72,6 +112,7 @@ const SingleBookDetails = () => {
           </div>
         </div>
       </div>
+      {/* review part  */}
       <div className="view-part mx-auto">
         <div className="my-10 p-4">
           <Tabs
@@ -83,23 +124,41 @@ const SingleBookDetails = () => {
                 key: id,
                 children: (
                   <div>
-                    <div className="my-16 ">
-                      <input
-                        type="text"
-                        className="border py-[7px] px-2 w-1/2 "
-                      />
-                      <button className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary">
-                        Submit
-                      </button>
-                    </div>
-
-                    <div className=" flex items-center flex-wrap gap-5">
-                      <Avatar icon={<BsPersonCircle className="text-3xl" />} />
-                      <div className="text-base">
-                        I'm empowered to find solutions.
+                    <form onSubmit={handleSubmit}>
+                      <div className="my-16 ">
+                        <TextArea
+                          className="min-h-[30px] w-1/2"
+                          rows={4}
+                          placeholder="maxLength is 6"
+                          onChange={handleChange}
+                          value={inputValue}
+                        />
+                        <br />
+                        <button className="px-3 my-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary">
+                          Submit
+                        </button>
                       </div>
-                    </div>
-                    <hr className="my-3" />
+                    </form>
+
+                    {data?.data?.reviews.map(
+                      (review: string, index: number) => (
+                        <>
+                          {' '}
+                          <div
+                            key={index}
+                            className=" flex items-center flex-wrap gap-5"
+                          >
+                            <Avatar
+                              icon={<BsPersonCircle className="text-3xl" />}
+                            />
+                            <div className="text-base">
+                              <p>{review}</p>
+                            </div>
+                          </div>
+                          <hr className="my-3" />
+                        </>
+                      )
+                    )}
                   </div>
                 ),
               };

@@ -9,16 +9,20 @@ const bookApi = api.injectEndpoints({
       query: (id) => `/books/${id}`,
     }),
 
+    //* Post a review
     postReview: builder.mutation({
       query: ({ id, data }) => ({
-        url: `/comment/${id}`,
+        url: `/books/review/${id}`,
         method: 'POST',
         body: data,
       }),
+      invalidatesTags: ['review'],
     }),
 
+    //* get all review
     getReview: builder.query({
-      query: (id) => `/comment/${id}`,
+      query: (id) => `/books/review/${id}`,
+      providesTags: ['review'],
     }),
   }),
 });
