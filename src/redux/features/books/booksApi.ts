@@ -1,9 +1,13 @@
+import { CreateBookFormValues } from '../../../components/books/AddNewBook';
 import { api } from '../../api/apiSlice';
 
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     //* get all books
-    getBooks: builder.query({ query: () => '/books' }),
+    getBooks: builder.query({
+      query: () => '/books',
+      providesTags: ['newBook'],
+    }),
 
     //* get single book
     singleBook: builder.query({
@@ -13,6 +17,17 @@ const bookApi = api.injectEndpoints({
     //* top 10 new book
     getNewBooks: builder.query({
       query: () => '/books?page=1&limit=10&Order=desc&sortBy=createdAt',
+      providesTags: ['newBook'],
+    }),
+
+    //* Add New book
+    createBook: builder.mutation<any, CreateBookFormValues>({
+      query: (bookData) => ({
+        url: '/books',
+        method: 'POST',
+        body: bookData,
+      }),
+      invalidatesTags: ['newBook'],
     }),
 
     //* get searched book
@@ -48,4 +63,5 @@ export const {
   usePostReviewMutation,
   useGetNewBooksQuery,
   useGetSearchedBookQuery,
+  useCreateBookMutation,
 } = bookApi;

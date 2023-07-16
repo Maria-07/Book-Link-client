@@ -7,12 +7,19 @@ import {
 import { IBook } from '../../types/globalType';
 import AddNewBook from '../../components/books/AddNewBook';
 import { BiSearchAlt } from 'react-icons/bi';
+import { getAccessToken } from '../../redux/api/apiSlice';
 
 const AllBooks = () => {
+  const token = getAccessToken();
+  console.log('token', token);
+
   const [bookData, setBookData] = useState([]);
   const [search, setSearch] = useState('');
 
-  const { data } = useGetSearchedBookQuery(search);
+  const { data } = useGetSearchedBookQuery(search, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 500,
+  });
 
   useEffect(() => {
     console.log('all books data', data);
@@ -68,12 +75,14 @@ const AllBooks = () => {
         <div className="mx-auto">
           <div className="flex items-center justify-between px-4">
             <h1 className="text-[18px] font-medium">All Books</h1>
-            <button
-              onClick={handleAddBook}
-              className="px-3 py-1 border rounded-md leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
-            >
-              Add New Book
-            </button>
+            {token && (
+              <button
+                onClick={handleAddBook}
+                className="px-3 py-1 border rounded-md leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
+              >
+                Add New Book
+              </button>
+            )}
           </div>
           {/* <AllBook></AllBook> */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 mx-5 gap-5">

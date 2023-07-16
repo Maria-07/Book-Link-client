@@ -78,7 +78,11 @@ const SingleBookDetails = () => {
       {' '}
       <div className="flex items-center justify-center gap-10 sm:flex-nowrap flex-wrap my-16">
         <div>
-          <img src={book?.data?.img} className="p-10 border" alt="" />
+          <img
+            src={book?.data?.img}
+            className="p-10 border sm:h-[590px] sm:w-[400px]"
+            alt=""
+          />
         </div>
         <div className="p-4">
           <div>
