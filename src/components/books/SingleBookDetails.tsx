@@ -53,13 +53,7 @@ const SingleBookDetails = () => {
       {' '}
       <div className="flex items-center justify-center gap-10 sm:flex-nowrap flex-wrap my-16">
         <div>
-          <img
-            src={
-              'https://proudly.in/wp-content/uploads/2022/09/Think-and-Grow-Rich.webp'
-            }
-            className="p-10 border"
-            alt=""
-          />
+          <img src={book?.data?.img} className="p-10 border" alt="" />
         </div>
         <div className="p-4">
           <div>

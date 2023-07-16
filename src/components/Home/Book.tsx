@@ -16,9 +16,13 @@ const Book = ({ book }: IProps) => {
       <div className="border-[1px] rounded-lg">
         <Card
           hoverable
-          style={{ width: 240 }}
+          style={{ width: 240, height: 475 }}
           cover={
-            <img className="p-10 border-b-[1px]" alt="example" src={img} />
+            <img
+              className="p-10 border-b-[1px] h-[300px]"
+              alt="example"
+              src={img}
+            />
           }
         >
           <div className="">

@@ -1,5 +1,7 @@
-import Book from './Book';
 import { IBook } from '../../types/globalType';
+import { useEffect, useState } from 'react';
+import { useGetNewBooksQuery } from '../../redux/features/books/booksApi';
+import Book from './Book';
 
 const bookData = [
   {
@@ -72,6 +74,14 @@ const bookData = [
 ];
 
 const Books = () => {
+  const [bookData, setBookData] = useState([]);
+  const { data, isLoading, error } = useGetNewBooksQuery(undefined);
+
+  useEffect(() => {
+    console.log('all books data', data);
+    setBookData(data?.data);
+  }, [data]);
+
   return (
     <>
       <div className="flex items-center justify-center mt-24">
@@ -85,9 +95,7 @@ const Books = () => {
       </div>
       <div className="w-[60vw] mx-auto my-24">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 my-8 gap-10">
-          {bookData?.map((book: IBook, index: number) => (
-            <Book key={index} book={book} />
-          ))}
+          {bookData?.map((book: IBook) => <Book book={book} key={book?.id} />)}
         </div>
       </div>
     </>
