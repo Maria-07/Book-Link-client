@@ -1,7 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from 'react';
 import Book from '../../components/Home/Book';
 import { useGetBooksQuery } from '../../redux/features/books/booksApi';
@@ -73,7 +69,7 @@ const AllBooks = () => {
           {/* <AllBook></AllBook> */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 my-8 mx-5 gap-5">
             {bookData?.map((book: IBook) => (
-              <Book book={book} key={book._id} />
+              <Book book={book} key={book?.id} />
             ))}
           </div>
         </div>

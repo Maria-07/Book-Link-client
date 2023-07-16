@@ -1,8 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Avatar, Tabs } from 'antd';
 import { FaFacebookF, FaInstagram, FaTwitch, FaTwitter } from 'react-icons/fa';
 import { BsPersonCircle } from 'react-icons/bs';
+import { useSingleBookQuery } from '../../redux/features/books/booksApi';
+import { useParams } from 'react-router-dom';
 
 const SingleBookDetails = () => {
+  // const { id } = useParams();
+  // console.log(id);
+
+  // const { data, isLoading, error } = useSingleBookQuery(id);
+
   return (
     <>
       {' '}

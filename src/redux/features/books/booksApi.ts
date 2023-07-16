@@ -1,16 +1,14 @@
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { api } from '../../api/apiSlice';
 
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
+    //* get all books
     getBooks: builder.query({ query: () => '/books' }),
 
     singleBook: builder.query({
-      query: (id) => `/book/${id}`,
+      query: (id) => `/books/${id}`,
     }),
 
-    //* mutation query
     postReview: builder.mutation({
       query: ({ id, data }) => ({
         url: `/comment/${id}`,

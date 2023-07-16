@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Card } from 'antd';
 import { IBook } from '../../types/globalType';
@@ -8,9 +9,10 @@ interface IProps {
 }
 
 const Book = ({ book }: IProps) => {
-  const { _id, img, title, author, genre, publicationDate } = book;
+  const { id, img, title, author, genre, publicationDate } = book;
+
   return (
-    <Link className="mx-auto " to={`/book-details/${_id}`}>
+    <Link className="mx-auto " to={`/book-details/${book?.id}`}>
       <div className="border-[1px] rounded-lg">
         <Card
           hoverable
