@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { Input } from 'antd';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSignUpMutation } from '../../redux/features/user/userApi';
 
 interface SignUpFormInputs {
   email: string;
@@ -8,28 +10,44 @@ interface SignUpFormInputs {
 }
 
 const SignUpForm = () => {
+  const [error, setError] = useState('');
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<SignUpFormInputs>();
 
-  const onSubmit = (data: SignUpFormInputs) => {
-    console.log(data);
+  const [signUp, { isLoading }] = useSignUpMutation();
+
+  const navigate = useNavigate();
+
+  //! api
+  const onSubmit = async (data: SignUpFormInputs) => {
+    try {
+      setError('');
+      await signUp({ email: data.email, password: data.password }).unwrap();
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+      // setError(error?.data?.message);
+      // if (error?.data?.message === 'User already exists') {
+      //   setError('User already exists');
+      // } else {
+      //   console.error('signUp failed:', error);
+      // }
+    }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <h1 className="text-sm text-primary mt-3">Email</h1>
-            <Input
-              id="email"
+            <h1 className="text-sm text-primary font-medium mt-3">Email</h1>
+            <input
               placeholder="name@example.com"
               type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
+              className="border-b-2 text-sm p-1"
               {...register('email', { required: 'Email is required' })}
             />
             {errors.email && (
@@ -38,12 +56,10 @@ const SignUpForm = () => {
               </p>
             )}
             <h1 className="text-sm text-primary mt-3">Password</h1>
-            <Input
-              id="password"
+            <input
               placeholder="your password"
               type="password"
-              autoCapitalize="none"
-              autoCorrect="off"
+              className="border-b-2 text-sm p-1"
               {...register('password', { required: 'Password is required' })}
             />
             {errors.password && (
@@ -51,14 +67,6 @@ const SignUpForm = () => {
                 {errors.password.message}
               </p>
             )}
-            <h1 className="text-sm text-primary mt-3">Confirm Password</h1>
-            <Input
-              id="password"
-              placeholder="confirm password"
-              type="password"
-              autoCapitalize="none"
-              autoCorrect="off"
-            />
           </div>
           <button className="px-3 py-1 border my-5 leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary rounded-md">
             Create Account

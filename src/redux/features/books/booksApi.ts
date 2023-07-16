@@ -35,6 +35,9 @@ const bookApi = api.injectEndpoints({
       query: (id) => `/books/review/${id}`,
       providesTags: ['review'],
     }),
+
+    //* set to wishList
+    // setToWishList:
   }),
 });
 

@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Avatar, Tabs } from 'antd';
-import { FaFacebookF, FaInstagram, FaTwitch, FaTwitter } from 'react-icons/fa';
+import { Avatar, Dropdown, MenuProps, Space, Tabs } from 'antd';
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaRegBookmark,
+  FaTwitch,
+  FaTwitter,
+} from 'react-icons/fa';
 import { BsPersonCircle } from 'react-icons/bs';
 import {
   useGetReviewQuery,
@@ -48,6 +54,25 @@ const SingleBookDetails = () => {
     setInputValue(event.target.value);
   };
 
+  const items: MenuProps['items'] = [
+    {
+      label: <button onClick={() => console.log('reading')}>Reading</button>,
+      key: '0',
+    },
+    {
+      label: (
+        <button onClick={() => console.log('plan to read')}>
+          Plan to read
+        </button>
+      ),
+      key: '1',
+    },
+    {
+      label: <button onClick={() => console.log('reading')}>Completed</button>,
+      key: '3',
+    },
+  ];
+
   return (
     <>
       {' '}
@@ -82,6 +107,19 @@ const SingleBookDetails = () => {
               how to get to the cause of all your stumbling blocks so that you
               are empowered to find solutions.
             </p>
+          </div>
+
+          <div className="my-10 flex items-center  gap-1">
+            <button className="px-3 py-1 border border-gray-400 rounded-sm leading-7 shadow-md text-[15px] hover:bg-[#804769] hover:text-secondary">
+              Read Now
+            </button>
+            <Dropdown menu={{ items }}>
+              <a onClick={(e) => e.preventDefault()}>
+                <button>
+                  <FaRegBookmark className="mt-[6px] text-[38px] text-[#804769] p-2 border border-[#804769] rounded-sm shadow-sm hover:bg-[#804769] hover:text-secondary" />
+                </button>
+              </a>
+            </Dropdown>
           </div>
 
           <div>
