@@ -1,6 +1,8 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import { Input } from 'antd';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+import { useLogInMutation } from '../../redux/features/user/userApi';
 
 interface LoginFormInputs {
   email: string;
@@ -8,28 +10,54 @@ interface LoginFormInputs {
 }
 
 const LoginForm = () => {
+  const [emailError, setEmailError] = useState('');
+  const [passError, setPassError] = useState('');
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit = (data: LoginFormInputs) => {
+  const [loginMutation] = useLogInMutation();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: LoginFormInputs) => {
     console.log(data);
+    try {
+      setEmailError(''); // Clear the error message before making the login API call
+      setPassError(''); // Clear the error message before making the login API call
+      const response = await loginMutation(data);
+      console.log('response', response);
+
+      const accessToken = response?.data?.data?.accessToken;
+
+      console.log('accessToken', accessToken);
+
+      if (accessToken) {
+        Cookies.set('accessToken', accessToken); // Store the access token in a cookie
+      }
+
+      navigate('/');
+    } catch (error) {
+      if (error?.data?.message === 'Password is incorrect') {
+        setPassError('Password is incorrect');
+      } else if (error?.data?.message === 'User does not exist') {
+        setPassError('User does not exist');
+      }
+    }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <h1 className="text-sm text-primary mt-3">Email</h1>
-            <Input
-              id="email"
+            <h1 className="text-sm text-primary font-medium mt-3">Email</h1>
+            <input
               placeholder="name@example.com"
               type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
+              className="border-b-2 text-sm p-1"
               {...register('email', { required: 'Email is required' })}
             />
             {errors.email && (
@@ -38,12 +66,10 @@ const LoginForm = () => {
               </p>
             )}
             <h1 className="text-sm text-primary mt-3">Password</h1>
-            <Input
-              id="password"
+            <input
               placeholder="your password"
               type="password"
-              autoCapitalize="none"
-              autoCorrect="off"
+              className="border-b-2 text-sm p-1"
               {...register('password', { required: 'Password is required' })}
             />
             {errors.password && (

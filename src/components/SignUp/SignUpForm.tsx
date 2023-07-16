@@ -28,13 +28,13 @@ const SignUpForm = () => {
       await signUp({ email: data.email, password: data.password }).unwrap();
       navigate('/login');
     } catch (error) {
-      console.log(error);
-      // setError(error?.data?.message);
-      // if (error?.data?.message === 'User already exists') {
-      //   setError('User already exists');
-      // } else {
-      //   console.error('signUp failed:', error);
-      // }
+      console.log(error?.data?.message);
+      setError(error?.data?.message);
+      if (error?.data?.message === 'User already exists') {
+        setError('User already exists');
+      } else {
+        console.error('signUp failed:', error);
+      }
     }
   };
 
