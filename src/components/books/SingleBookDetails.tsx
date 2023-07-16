@@ -8,19 +8,18 @@ import {
   useSingleBookQuery,
 } from '../../redux/features/books/booksApi';
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 
 const SingleBookDetails = () => {
   const { id } = useParams();
   console.log(id);
 
-  // const { data, isLoading, error } = useSingleBookQuery(id);
+  //! Single book query
+  const { data: book } = useSingleBookQuery(id);
 
-  //! Review Section
-
+  //! Get Review Section
   const [inputValue, setInputValue] = useState<string>('');
-
   const { data, error } = useGetReviewQuery(id, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
@@ -29,7 +28,7 @@ const SingleBookDetails = () => {
   //! Post review
   const [postReview, { isError, isLoading, isSuccess }] =
     usePostReviewMutation();
-  console.log(' Data', data);
+  console.log(isError, isLoading, isSuccess, error);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -44,8 +43,6 @@ const SingleBookDetails = () => {
     postReview(options);
     setInputValue('');
   };
-
-  console.log(isLoading, error);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
@@ -67,16 +64,19 @@ const SingleBookDetails = () => {
         <div className="p-4">
           <div>
             <h1 className="text-2xl mb-3 font-secondary font-semibold text-popover">
-              The Da Vinci Code
+              {book?.data?.title}
             </h1>
             <h2 className="text-[16px] font-medium text-primary">
-              <span className="font-semibold"> Author :</span> Dan Brown
+              <span className="font-semibold"> Author :</span>{' '}
+              {book?.data?.author}
             </h2>
             <h3 className="text-[16px] font-medium text-primary">
-              <span className="font-semibold"> Genre :</span>Thriller
+              <span className="font-semibold"> Genre :</span>{' '}
+              {book?.data?.genre}
             </h3>
             <h4 className="text-[16px] font-medium text-primary">
-              <span className="font-semibold"> Published Date :</span>1998
+              <span className="font-semibold"> Published Date :</span>{' '}
+              {book?.data?.publicationDate}
             </h4>
           </div>
           <div>
