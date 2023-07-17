@@ -2,24 +2,22 @@ import '../styles/navbar.css';
 import { LuLanguages } from 'react-icons/lu';
 import { BiShoppingBag } from 'react-icons/bi';
 import CustomLink from '../shared/CustomLink';
-import Cookies from 'js-cookie';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { getAccessToken } from '../redux/api/apiSlice';
 import { useState } from 'react';
 import Hamburger from 'hamburger-react';
 import { motion } from 'framer-motion';
+import LogoutForm from '../components/Login/LogoutForm';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [logout, setLogout] = useState(false);
 
   const token = getAccessToken();
   console.log('token', token);
 
-  const navigate = useNavigate();
-
   const handleLogOut = () => {
-    Cookies.remove('accessToken'); // Clear the access token from the cookie
-    navigate('/login'); // Redirect the user to the login page
+    setLogout(!logout);
   };
 
   return (
@@ -149,6 +147,9 @@ const Navbar = () => {
           )}
         </div>
       </div>
+      {logout && (
+        <LogoutForm handleClose={handleLogOut} clicked={logout}></LogoutForm>
+      )}
     </>
   );
 };
