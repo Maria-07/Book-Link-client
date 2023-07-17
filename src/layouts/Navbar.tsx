@@ -136,7 +136,7 @@ const Navbar = () => {
             Home
           </CustomLink>
           <CustomLink className="hover:text-popover" to="/books">
-            Books
+            All Books
           </CustomLink>
           {token ? (
             <CustomLink className="hover:text-popover" to="/wish-list">

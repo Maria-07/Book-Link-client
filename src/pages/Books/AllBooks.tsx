@@ -47,7 +47,8 @@ const AllBooks = () => {
     new Date(item.publicationDate).getFullYear()
   );
 
-  console.log(publicationDates);
+  console.log('year', year);
+  console.log('publicationDates', publicationDates);
 
   return (
     <div className="view-part mx-auto my-16">

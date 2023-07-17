@@ -2,13 +2,18 @@ import { IBook } from '../../types/globalType';
 import { useEffect, useState } from 'react';
 import { useGetNewBooksQuery } from '../../redux/features/books/booksApi';
 import Book from './Book';
+import Loader from '../../shared/Loader';
 
 const Books = () => {
   const [bookData, setBookData] = useState([]);
-  const { data, isLoading, error } = useGetNewBooksQuery(undefined, {
+  const { data, isLoading } = useGetNewBooksQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 500,
   });
+
+  if (isLoading) {
+    <Loader></Loader>;
+  }
 
   // console.log(isLoading, error);
 

@@ -4,14 +4,19 @@ import { useGetFilterWishListQuery } from '../../redux/features/books/booksApi';
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 import CurrentUserEmail from '../../hook/CurrentUserEmail';
+import Loader from '../../shared/Loader';
 const WishList = () => {
   const email = CurrentUserEmail();
 
   const [status, setStatus] = useState('');
   const [filterBook, setFilterBook] = useState([]);
-  const { data, isLoading, error } = useGetFilterWishListQuery(status);
+  const { data, isLoading } = useGetFilterWishListQuery(status);
 
   console.log(data);
+
+  if (isLoading) {
+    <Loader></Loader>;
+  }
 
   useEffect(() => {
     console.log('wish book data', data?.data);

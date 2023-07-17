@@ -19,7 +19,6 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 import DeleteBookModal from './DeleteBookModal';
 import UpdateBook from './UpdateBook';
-import { toast } from 'react-toastify';
 import CurrentUserEmail from '../../hook/CurrentUserEmail';
 import Loader from '../../shared/Loader';
 
@@ -57,7 +56,7 @@ const SingleBookDetails = () => {
 
   //! Get Review Section  --------------------------------------------------------
   const [inputValue, setInputValue] = useState<string>('');
-  const { data, error } = useGetReviewQuery(id, {
+  const { data } = useGetReviewQuery(id, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 30000,
   });
@@ -119,7 +118,7 @@ const SingleBookDetails = () => {
     {
       label: (
         <button
-          onClick={(status) => {
+          onClick={() => {
             handleAddToWishList('reading');
             setWishButton(true);
           }}
@@ -132,7 +131,7 @@ const SingleBookDetails = () => {
     {
       label: (
         <button
-          onClick={(status) => {
+          onClick={() => {
             handleAddToWishList('plan to read');
             setWishButton(true);
           }}
@@ -145,7 +144,7 @@ const SingleBookDetails = () => {
     {
       label: (
         <button
-          onClick={(status) => {
+          onClick={() => {
             handleAddToWishList('finished');
             setWishButton(true);
           }}

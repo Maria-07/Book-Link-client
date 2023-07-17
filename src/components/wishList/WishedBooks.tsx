@@ -8,7 +8,7 @@ import Loader from '../../shared/Loader';
 const WishedBooks = () => {
   const email = CurrentUserEmail();
   const [bookData, setBookData] = useState([]);
-  const { data, isLoading, error } = useGetAllWishListQuery(undefined, {
+  const { data, isLoading } = useGetAllWishListQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 500,
   });
