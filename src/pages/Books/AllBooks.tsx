@@ -11,7 +11,7 @@ import { getAccessToken } from '../../redux/api/apiSlice';
 
 const AllBooks = () => {
   const token = getAccessToken();
-  console.log('token', token);
+  // console.log('token', token);
 
   const [bookData, setBookData] = useState([]);
   const [search, setSearch] = useState('');

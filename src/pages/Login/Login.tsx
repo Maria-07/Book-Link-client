@@ -5,7 +5,7 @@ const Login = () => {
   return (
     <div>
       {' '}
-      <div className="my-24">
+      <div className="my-24 p-2">
         {/* <div className="text-primary font-secondary text-center font-medium text-[25px]">
           Book<span className="text-popover">Link</span>
         </div> */}
@@ -16,7 +16,7 @@ const Login = () => {
                 Login to your account
               </h1>
             </div>
-            <hr />
+            <hr className="p-5" />
             <LoginForm />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{' '}

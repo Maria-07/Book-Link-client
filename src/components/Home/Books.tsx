@@ -75,7 +75,10 @@ const bookData = [
 
 const Books = () => {
   const [bookData, setBookData] = useState([]);
-  const { data, isLoading, error } = useGetNewBooksQuery(undefined);
+  const { data, isLoading, error } = useGetNewBooksQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 500,
+  });
 
   useEffect(() => {
     console.log('all books data', data);

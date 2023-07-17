@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLogInMutation } from '../../redux/features/user/userApi';
 
 interface LoginFormInputs {
@@ -49,7 +49,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
+    <div className="p-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
@@ -81,6 +81,12 @@ const LoginForm = () => {
           <button className="px-3 py-1 border my-5 leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary rounded-md">
             Log In
           </button>
+          <div className="mx-auto">
+            Don't have any account ?{' '}
+            <Link className="text-popover font-semibold" to={'/signUp'}>
+              Sign Up
+            </Link>{' '}
+          </div>
         </div>
       </form>
     </div>

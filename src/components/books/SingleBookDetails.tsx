@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Avatar, Dropdown, MenuProps, Space, Tabs } from 'antd';
+import { Avatar, Dropdown, MenuProps, Tabs } from 'antd';
 import {
   FaFacebookF,
   FaInstagram,
@@ -16,6 +16,7 @@ import {
 import { useParams } from 'react-router-dom';
 import { useState, ChangeEvent, FormEvent } from 'react';
 import TextArea from 'antd/es/input/TextArea';
+import DeleteBookModal from './DeleteBookModal';
 
 const SingleBookDetails = () => {
   const { id } = useParams();
@@ -24,7 +25,14 @@ const SingleBookDetails = () => {
   //! Single book query
   const { data: book } = useSingleBookQuery(id);
 
-  //! Get Review Section
+  //! Delete book----------------------------------------------------------------
+  const [deleteBook, setDeleteBook] = useState(false);
+
+  const handleDeleteBook = () => {
+    setDeleteBook(!deleteBook);
+  };
+
+  //! Get Review Section  --------------------------------------------------------
   const [inputValue, setInputValue] = useState<string>('');
   const { data, error } = useGetReviewQuery(id, {
     refetchOnMountOrArgChange: true,
@@ -34,18 +42,16 @@ const SingleBookDetails = () => {
   //! Post review
   const [postReview, { isError, isLoading, isSuccess }] =
     usePostReviewMutation();
+
   console.log(isError, isLoading, isSuccess, error);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const options = {
       id: id,
       data: { reviews: inputValue },
     };
-
     console.log(options);
-
     postReview(options);
     setInputValue('');
   };
@@ -53,6 +59,7 @@ const SingleBookDetails = () => {
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
   };
+  //! Get Review Section  --------------------------------------------------------
 
   const items: MenuProps['items'] = [
     {
@@ -142,7 +149,10 @@ const SingleBookDetails = () => {
             <button className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary">
               Edit Book
             </button>
-            <button className="px-3 py-1 border border-gray-400 rounded-sm leading-7 shadow-md text-[15px] hover:bg-red-700 hover:text-secondary">
+            <button
+              onClick={handleDeleteBook}
+              className="px-3 py-1 border border-gray-400 rounded-sm leading-7 shadow-md text-[15px] hover:bg-red-700 hover:text-secondary"
+            >
               Delete
             </button>
           </div>
@@ -202,6 +212,13 @@ const SingleBookDetails = () => {
           />
         </div>
       </div>
+      {deleteBook && (
+        <DeleteBookModal
+          id={id}
+          handleClose={handleDeleteBook}
+          clicked={deleteBook}
+        ></DeleteBookModal>
+      )}
     </>
   );
 };

@@ -4,7 +4,6 @@ import { Modal } from 'antd';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useCreateBookMutation } from '../../redux/features/books/booksApi';
-import { ToastContainer, toast } from 'react-toastify';
 import { useState } from 'react';
 
 interface props {
@@ -24,11 +23,7 @@ export type CreateBookFormValues = {
 const AddNewBook = ({ handleClose, clicked }: props) => {
   const [error, setError] = useState('');
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreateBookFormValues>();
+  const { register, handleSubmit } = useForm<CreateBookFormValues>();
 
   const [createBook] = useCreateBookMutation();
 

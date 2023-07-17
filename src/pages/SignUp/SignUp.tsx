@@ -4,7 +4,7 @@ import SignUpForm from '../../components/SignUp/SignUpForm';
 const SignUp = () => {
   return (
     <div>
-      <div className="my-24">
+      <div className="my-24 p-2">
         {/* <div className="text-primary font-secondary text-center font-medium text-[25px]">
           Book<span className="text-popover">Link</span>
         </div> */}

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '../../redux/features/user/userApi';
 
 interface SignUpFormInputs {
@@ -39,11 +39,11 @@ const SignUpForm = () => {
   };
 
   return (
-    <div>
+    <div className="p-5">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-2">
           <div className="grid gap-1">
-            <h1 className="text-sm text-primary font-medium mt-3">Email</h1>
+            <h1 className=" text-primary font-semibold mt-3">Email</h1>
             <input
               placeholder="name@example.com"
               type="email"
@@ -55,7 +55,7 @@ const SignUpForm = () => {
                 {errors.email.message}
               </p>
             )}
-            <h1 className="text-sm text-primary mt-3">Password</h1>
+            <h1 className=" text-primary font-semibold mt-3">Password</h1>
             <input
               placeholder="your password"
               type="password"
@@ -68,9 +68,16 @@ const SignUpForm = () => {
               </p>
             )}
           </div>
+
           <button className="px-3 py-1 border my-5 leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary rounded-md">
             Create Account
           </button>
+          <div className="mx-auto">
+            Already have an account ?{' '}
+            <Link className="text-popover font-semibold" to={'/login'}>
+              Log In
+            </Link>{' '}
+          </div>
         </div>
       </form>
     </div>
