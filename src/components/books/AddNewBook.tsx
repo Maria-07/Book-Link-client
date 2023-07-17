@@ -34,7 +34,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
       const response = await createBook(bookData).unwrap();
       console.log(response.message);
       handleClose();
-    } catch (error) {
+    } catch (error: any) {
       // console.error(error?.data?.message);
       setError(error?.data?.message);
     }

@@ -21,7 +21,7 @@ import UpdateBook from './UpdateBook';
 
 const SingleBookDetails = () => {
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
 
   //! Single book query
   const { data: book } = useSingleBookQuery(id, {

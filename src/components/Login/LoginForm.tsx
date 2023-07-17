@@ -23,23 +23,23 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: LoginFormInputs) => {
-    console.log(data);
+    console.log(data, emailError, passError);
     try {
       setEmailError(''); // Clear the error message before making the login API call
       setPassError(''); // Clear the error message before making the login API call
-      const response = await loginMutation(data);
+      const response: any = await loginMutation(data);
       console.log('response', response);
 
       const accessToken = response?.data?.data?.accessToken;
 
-      console.log('accessToken', accessToken);
+      console.log('accessToken ', accessToken);
 
       if (accessToken) {
         Cookies.set('accessToken', accessToken); // Store the access token in a cookie
       }
 
       navigate('/');
-    } catch (error) {
+    } catch (error: any) {
       if (error?.data?.message === 'Password is incorrect') {
         setPassError('Password is incorrect');
       } else if (error?.data?.message === 'User does not exist') {
@@ -78,6 +78,7 @@ const LoginForm = () => {
               </p>
             )}
           </div>
+          {}
           <button className="px-3 py-1 border my-5 leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary rounded-md">
             Log In
           </button>

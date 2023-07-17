@@ -17,9 +17,11 @@ const SignUpForm = () => {
     formState: { errors },
   } = useForm<SignUpFormInputs>();
 
-  const [signUp, { isLoading }] = useSignUpMutation();
+  const [signUp] = useSignUpMutation();
 
   const navigate = useNavigate();
+
+  console.log(error);
 
   //! api
   const onSubmit = async (data: SignUpFormInputs) => {
@@ -27,7 +29,7 @@ const SignUpForm = () => {
       setError('');
       await signUp({ email: data.email, password: data.password }).unwrap();
       navigate('/login');
-    } catch (error) {
+    } catch (error: any) {
       console.log(error?.data?.message);
       setError(error?.data?.message);
       if (error?.data?.message === 'User already exists') {

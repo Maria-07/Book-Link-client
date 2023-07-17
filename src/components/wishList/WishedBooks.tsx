@@ -1,6 +1,6 @@
 import { IBook } from '../../types/globalType';
 import Book from '../Home/Book';
-import Books from '../Home/Books';
+
 const bookData = [
   {
     _id: '64b0fab3d9a1ddf45673a7cc',

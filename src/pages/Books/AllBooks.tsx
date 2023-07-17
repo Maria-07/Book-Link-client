@@ -1,9 +1,6 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Book from '../../components/Home/Book';
-import {
-  useGetBooksQuery,
-  useGetSearchedBookQuery,
-} from '../../redux/features/books/booksApi';
+import { useGetSearchedBookQuery } from '../../redux/features/books/booksApi';
 import { IBook } from '../../types/globalType';
 import AddNewBook from '../../components/books/AddNewBook';
 import { BiSearchAlt } from 'react-icons/bi';

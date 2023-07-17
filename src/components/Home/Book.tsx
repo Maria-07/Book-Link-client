@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const Book = ({ book }: IProps) => {
-  const { id, img, title, author, genre, publicationDate } = book;
+  const { img, title, author, genre, publicationDate } = book;
 
   return (
     <Link className="mx-auto " to={`/book-details/${book?.id}`}>

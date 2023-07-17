@@ -3,10 +3,7 @@
 import { Modal } from 'antd';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
-import {
-  useCreateBookMutation,
-  useUpdateBookMutation,
-} from '../../redux/features/books/booksApi';
+import { useUpdateBookMutation } from '../../redux/features/books/booksApi';
 import { useState } from 'react';
 
 interface props {
@@ -41,7 +38,7 @@ const UpdateBook = ({ id, book, handleClose, clicked }: props) => {
       const response = await updateBook({ id, bookData }).unwrap();
       console.log(response.message);
       handleClose();
-    } catch (error) {
+    } catch (error: any) {
       // console.error(error?.data?.message);
       setError(error?.data?.message);
     }
