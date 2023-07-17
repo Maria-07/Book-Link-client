@@ -14,7 +14,7 @@ import {
   usePostReviewMutation,
   useSingleBookQuery,
 } from '../../redux/features/books/booksApi';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, ChangeEvent, FormEvent } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 import DeleteBookModal from './DeleteBookModal';
@@ -74,18 +74,21 @@ const SingleBookDetails = () => {
     //   duration: 2,
     // });
   }
-
-  // console.log(isError, isLoading, isSuccess, error);
-
+  const navigate = useNavigate();
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const options = {
       id: id,
       data: { reviews: inputValue },
     };
-    console.log(options);
-    postReview(options);
-    setInputValue('');
+
+    if (email) {
+      console.log(options);
+      postReview(options);
+      setInputValue('');
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {

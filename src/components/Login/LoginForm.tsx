@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Cookies from 'js-cookie';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLogInMutation } from '../../redux/features/user/userApi';
-import { notification } from 'antd';
 
 interface LoginFormInputs {
   email: string;
@@ -13,7 +12,6 @@ interface LoginFormInputs {
 const LoginForm = () => {
   const [emailError, setEmailError] = useState('');
   const [passError, setPassError] = useState('');
-  const [api, contextHolder] = notification.useNotification();
 
   const {
     register,
@@ -31,18 +29,6 @@ const LoginForm = () => {
       setPassError(''); // Clear the error message before making the login API call
       const response: any = await loginMutation(data);
       console.log('response', response);
-
-      // if (response.error.data.message) {
-      //   api.open({
-      //     message: (
-      //       <div className="text-base font-semibold">
-      //         <span className="text-rose-500 font-bold"> Error : </span>$
-      //         {response.error.data.message}
-      //       </div>
-      //     ),
-      //     duration: 3,
-      //   });
-      // }
 
       const accessToken = response?.data?.data?.accessToken;
 
@@ -66,7 +52,6 @@ const LoginForm = () => {
 
   return (
     <>
-      {contextHolder}
       <div className="p-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-2">
