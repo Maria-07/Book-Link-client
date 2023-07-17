@@ -12,6 +12,7 @@ const bookApi = api.injectEndpoints({
     //* get single book
     singleBook: builder.query({
       query: (id) => `/books/${id}`,
+      providesTags: ['newBook'],
     }),
 
     //* top 10 new book
@@ -36,11 +37,20 @@ const bookApi = api.injectEndpoints({
       providesTags: ['newBook'],
     }),
 
-    //* delete single book
-    // deleteBook: builder.mutation({
-    //   query: (id) => `/books/${id}`,
-    // }),
+    //* Update a book
+    updateBook: builder.mutation<
+      any,
+      { id: string; bookData: CreateBookFormValues }
+    >({
+      query: ({ id, bookData }) => ({
+        url: `/books/${id}`,
+        method: 'PATCH',
+        body: bookData,
+      }),
+      invalidatesTags: ['newBook'],
+    }),
 
+    //* delete single book
     deleteBook: builder.mutation<any, string>({
       query: (id) => ({
         url: `/books/${id}`,
@@ -79,4 +89,5 @@ export const {
   useGetSearchedBookQuery,
   useCreateBookMutation,
   useDeleteBookMutation,
+  useUpdateBookMutation,
 } = bookApi;

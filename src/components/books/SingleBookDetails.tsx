@@ -17,13 +17,24 @@ import { useParams } from 'react-router-dom';
 import { useState, ChangeEvent, FormEvent } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 import DeleteBookModal from './DeleteBookModal';
+import UpdateBook from './UpdateBook';
 
 const SingleBookDetails = () => {
   const { id } = useParams();
   console.log(id);
 
   //! Single book query
-  const { data: book } = useSingleBookQuery(id);
+  const { data: book } = useSingleBookQuery(id, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 500,
+  });
+
+  //! update book----------------------------------------------------------------
+  const [updateBook, setUpdateBook] = useState(false);
+
+  const handleUpdateBook = () => {
+    setUpdateBook(!updateBook);
+  };
 
   //! Delete book----------------------------------------------------------------
   const [deleteBook, setDeleteBook] = useState(false);
@@ -146,7 +157,10 @@ const SingleBookDetails = () => {
           </div>
 
           <div className="my-10 flex items-center  gap-4">
-            <button className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary">
+            <button
+              onClick={handleUpdateBook}
+              className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
+            >
               Edit Book
             </button>
             <button
@@ -166,7 +180,11 @@ const SingleBookDetails = () => {
             items={new Array(1).fill(null).map((_, i) => {
               const id = String(i + 1);
               return {
-                label: <p className="text-lg text-primary">Review</p>,
+                label: (
+                  <p key={i} className="text-lg text-primary">
+                    Review
+                  </p>
+                ),
                 key: id,
                 children: (
                   <div>
@@ -218,6 +236,14 @@ const SingleBookDetails = () => {
           handleClose={handleDeleteBook}
           clicked={deleteBook}
         ></DeleteBookModal>
+      )}
+      {updateBook && (
+        <UpdateBook
+          id={id}
+          book={book}
+          handleClose={handleUpdateBook}
+          clicked={updateBook}
+        ></UpdateBook>
       )}
     </>
   );

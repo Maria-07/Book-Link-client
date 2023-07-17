@@ -3,15 +3,21 @@
 import { Modal } from 'antd';
 import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
-import { useCreateBookMutation } from '../../redux/features/books/booksApi';
+import {
+  useCreateBookMutation,
+  useUpdateBookMutation,
+} from '../../redux/features/books/booksApi';
 import { useState } from 'react';
 
 interface props {
+  id: any;
+  book: CreateBookFormValues;
   handleClose: any;
   clicked: boolean;
 }
 
 export type CreateBookFormValues = {
+  [x: string]: any;
   title: string;
   author: string;
   genre: string;
@@ -20,18 +26,19 @@ export type CreateBookFormValues = {
   _id: string;
 };
 
-const AddNewBook = ({ handleClose, clicked }: props) => {
+const UpdateBook = ({ id, book, handleClose, clicked }: props) => {
   const [error, setError] = useState('');
+
+  console.log('bookData', id);
 
   const { register, handleSubmit } = useForm<CreateBookFormValues>();
 
-  const [createBook] = useCreateBookMutation();
+  const [updateBook] = useUpdateBookMutation();
 
   const onSubmit = async (bookData: CreateBookFormValues) => {
-    // console.log(bookData);
-
+    console.log(bookData);
     try {
-      const response = await createBook(bookData).unwrap();
+      const response = await updateBook({ id, bookData }).unwrap();
       console.log(response.message);
       handleClose();
     } catch (error) {
@@ -71,6 +78,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
                   <span className="modal-label-name">Book Photo</span>
                 </label>
                 <input
+                  defaultValue={book?.data?.img}
                   className="col-span-2 modal-input-field mt-1 w-full"
                   {...register('img')}
                 />
@@ -80,6 +88,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
                   <span className="modal-label-name">Title</span>
                 </label>
                 <input
+                  defaultValue={book?.data?.title}
                   className="col-span-2 modal-input-field mt-1 w-full"
                   {...register('title')}
                 />
@@ -89,6 +98,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
                   <span className="modal-label-name">Author</span>
                 </label>
                 <input
+                  defaultValue={book?.data?.author}
                   className="col-span-2 modal-input-field mt-1 w-full"
                   {...register('author')}
                 />
@@ -100,6 +110,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
 
                 <select
                   className="col-span-2 modal-input-field mt-1 w-full"
+                  defaultValue={book?.data?.genre}
                   {...register('genre')}
                 >
                   <option value="">-- Select Genre --</option>
@@ -130,6 +141,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
                   <span className="modal-label-name">Published Date</span>
                 </label>
                 <input
+                  defaultValue={book?.data?.publicationDate}
                   type="date"
                   className="col-span-2 modal-input-field mt-1 w-full"
                   {...register('publicationDate')}
@@ -141,7 +153,7 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
                   className="px-3 mr-1 py-1 border rounded-md leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
                   type="submit"
                 >
-                  Add New Book
+                  Update Book
                 </button>
 
                 <button
@@ -162,4 +174,4 @@ const AddNewBook = ({ handleClose, clicked }: props) => {
   );
 };
 
-export default AddNewBook;
+export default UpdateBook;

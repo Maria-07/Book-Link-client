@@ -4,7 +4,7 @@ import { useDeleteBookMutation } from '../../redux/features/books/booksApi';
 import { useNavigate } from 'react-router-dom';
 
 interface props {
-  id: string;
+  id: any;
   handleClose: any;
   clicked: boolean;
 }
