@@ -9,6 +9,7 @@ import {
 } from 'react-icons/fa';
 import { BsPersonCircle } from 'react-icons/bs';
 import {
+  useAddToWishListMutation,
   useGetReviewQuery,
   usePostReviewMutation,
   useSingleBookQuery,
@@ -18,6 +19,7 @@ import { useState, ChangeEvent, FormEvent } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 import DeleteBookModal from './DeleteBookModal';
 import UpdateBook from './UpdateBook';
+import { toast } from 'react-toastify';
 
 const SingleBookDetails = () => {
   const { id } = useParams();
@@ -54,7 +56,7 @@ const SingleBookDetails = () => {
   const [postReview, { isError, isLoading, isSuccess }] =
     usePostReviewMutation();
 
-  console.log(isError, isLoading, isSuccess, error);
+  // console.log(isError, isLoading, isSuccess, error);
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -72,21 +74,64 @@ const SingleBookDetails = () => {
   };
   //! Get Review Section  --------------------------------------------------------
 
+  //! wishList
+
+  const [addToWishList] = useAddToWishListMutation();
+
+  const handleAddToWishList = async (status: string) => {
+    try {
+      await addToWishList({ book: book?.data?.id, status: status });
+
+      toast.success(`Added to ${status} List`, {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+    } catch (error) {
+      console.error('Failed to add to Wish List:', error);
+      toast.error('Failed to add to Wish List', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+    }
+  };
+
   const items: MenuProps['items'] = [
     {
-      label: <button onClick={() => console.log('reading')}>Reading</button>,
+      label: (
+        <button
+          onClick={(status) => {
+            handleAddToWishList('reading');
+          }}
+        >
+          Reading
+        </button>
+      ),
       key: '0',
     },
     {
       label: (
-        <button onClick={() => console.log('plan to read')}>
+        <button
+          onClick={(status) => {
+            handleAddToWishList('plan to read');
+          }}
+        >
           Plan to read
         </button>
       ),
       key: '1',
     },
     {
-      label: <button onClick={() => console.log('reading')}>Completed</button>,
+      label: (
+        <button
+          onClick={(status) => {
+            handleAddToWishList('finished');
+          }}
+        >
+          Completed
+        </button>
+      ),
       key: '3',
     },
   ];

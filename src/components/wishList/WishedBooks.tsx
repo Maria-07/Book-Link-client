@@ -1,83 +1,58 @@
-import { IBook } from '../../types/globalType';
-import Book from '../Home/Book';
-
-const bookData = [
-  {
-    _id: '64b0fab3d9a1ddf45673a7cc',
-    title: 'Dune',
-    author: 'Frank Herbert',
-    genre: 'Science Fiction',
-    publicationDate: '1960',
-    img: 'https://c8.alamy.com/comp/KJAB7G/book-cover-creative-concept-drama-or-horror-theme-mid-century-style-KJAB7G.jpg',
-    reviews: [],
-    createdAt: '2023-07-14T07:35:15.378Z',
-    updatedAt: '2023-07-14T08:29:02.616Z',
-    __v: 0,
-    id: '64b0fab3d9a1ddf45673a7cc',
-  },
-  {
-    _id: '64b0faa7d9a1ddf45673a7ca',
-    title: 'Pride and Prejudice',
-    author: 'Jane Austen',
-    genre: 'Romance',
-    publicationDate: '1813',
-    img: 'https://c8.alamy.com/comp/KJAB7G/book-cover-creative-concept-drama-or-horror-theme-mid-century-style-KJAB7G.jpg',
-    reviews: ['A timeless love story with memorable characters.'],
-    createdAt: '2023-07-14T07:35:03.926Z',
-    updatedAt: '2023-07-14T07:35:03.926Z',
-    __v: 0,
-    id: '64b0faa7d9a1ddf45673a7ca',
-  },
-  {
-    _id: '64b0fa95d9a1ddf45673a7c8',
-    title: 'The Da Vinci Code',
-    author: 'Dan Brown',
-    genre: 'Thriller',
-    publicationDate: '2003',
-    img: 'https://c8.alamy.com/comp/KJAB7G/book-cover-creative-concept-drama-or-horror-theme-mid-century-style-KJAB7G.jpg',
-    reviews: [
-      'An exciting and fast-paced page-turner with a historical twist.',
-    ],
-    createdAt: '2023-07-14T07:34:45.109Z',
-    updatedAt: '2023-07-14T07:34:45.109Z',
-    __v: 0,
-    id: '64b0fa95d9a1ddf45673a7c8',
-  },
-  {
-    _id: '64b0fa82d9a1ddf45673a7c6',
-    title: 'Gone Girl',
-    author: 'Gillian Flynn',
-    genre: 'Mystery',
-    publicationDate: '2012',
-    img: 'https://c8.alamy.com/comp/KJAB7G/book-cover-creative-concept-drama-or-horror-theme-mid-century-style-KJAB7G.jpg',
-    reviews: [],
-    createdAt: '2023-07-14T07:34:26.570Z',
-    updatedAt: '2023-07-14T07:34:26.570Z',
-    __v: 0,
-    id: '64b0fa82d9a1ddf45673a7c6',
-  },
-  {
-    _id: '64b0f948e1a9afed5f376746',
-    title: 'The Great Gatsby',
-    author: 'F. Scott Fitzgerald',
-    genre: 'Fiction',
-    publicationDate: '1925',
-    img: 'https://c8.alamy.com/comp/KJAB7G/book-cover-creative-concept-drama-or-horror-theme-mid-century-style-KJAB7G.jpg',
-    reviews: [],
-    createdAt: '2023-07-14T07:29:12.929Z',
-    updatedAt: '2023-07-14T07:29:12.929Z',
-    __v: 0,
-    id: '64b0f948e1a9afed5f376746',
-  },
-];
+import { useEffect, useState } from 'react';
+import { useGetAllWishListQuery } from '../../redux/features/books/booksApi';
+import { Card } from 'antd';
+import { Link } from 'react-router-dom';
 
 const WishedBooks = () => {
+  const [bookData, setBookData] = useState([]);
+  const { data, isLoading, error } = useGetAllWishListQuery(undefined, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 500,
+  });
+
+  // console.log(isLoading, error);
+
+  useEffect(() => {
+    console.log('wish book data', data?.data);
+    setBookData(data?.data);
+  }, [data]);
   return (
     <div>
       <div className="w-[60vw] mx-auto ">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 my-8 gap-10">
-          {bookData?.map((book: IBook, index: number) => (
-            <Book key={index} book={book} />
+          {bookData?.map((d: any, index: number) => (
+            <>
+              <Link className="mx-auto " to={`/book-details/${d?.book?.id}`}>
+                <div key={index} className="border-[1px] rounded-lg">
+                  <Card
+                    hoverable
+                    style={{ width: 240, height: 475 }}
+                    cover={
+                      <img
+                        className="p-10 border-b-[1px] h-[300px]"
+                        alt="example"
+                        src={d?.book?.img}
+                      />
+                    }
+                  >
+                    <div className="">
+                      <h1 className="text-xl font-medium text-popover">
+                        {d?.book?.title}
+                      </h1>
+                      <h2 className="text-base font-medium text-primary">
+                        {d?.book?.author}
+                      </h2>
+                      <h3 className="text-sm font-medium text-gray-500">
+                        {d?.book?.genre}
+                      </h3>
+                      <h4 className="text-base font-regular mt-3">
+                        {d?.book?.publicationDate}
+                      </h4>
+                    </div>
+                  </Card>
+                </div>
+              </Link>
+            </>
           ))}
         </div>
       </div>

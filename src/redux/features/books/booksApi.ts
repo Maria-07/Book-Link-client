@@ -75,8 +75,26 @@ const bookApi = api.injectEndpoints({
       providesTags: ['review'],
     }),
 
-    //* set to wishList
-    // setToWishList:
+    //* Post a wishlist
+    addToWishList: builder.mutation<any, { book: string; status: string }>({
+      query: ({ book, status }) => ({
+        url: '/wishLists',
+        method: 'POST',
+        body: { book, status },
+      }),
+    }),
+
+    //* Get wishlist
+    getAllWishList: builder.query({
+      query: () => '/wishLists',
+      providesTags: ['newBook'],
+    }),
+
+    //* Get filter wishlist
+    getFilterWishList: builder.query({
+      query: (status) => `/wishLists?status=${status}`,
+      providesTags: ['newBook'],
+    }),
   }),
 });
 
@@ -90,4 +108,7 @@ export const {
   useCreateBookMutation,
   useDeleteBookMutation,
   useUpdateBookMutation,
+  useAddToWishListMutation,
+  useGetAllWishListQuery,
+  useGetFilterWishListQuery,
 } = bookApi;
