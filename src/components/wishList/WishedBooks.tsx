@@ -2,13 +2,19 @@ import { useEffect, useState } from 'react';
 import { useGetAllWishListQuery } from '../../redux/features/books/booksApi';
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
+import CurrentUserEmail from '../../hook/CurrentUserEmail';
+import Loader from '../../shared/Loader';
 
 const WishedBooks = () => {
+  const email = CurrentUserEmail();
   const [bookData, setBookData] = useState([]);
   const { data, isLoading, error } = useGetAllWishListQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 500,
   });
+  if (isLoading) {
+    <Loader />;
+  }
 
   // console.log(isLoading, error);
 
@@ -16,11 +22,17 @@ const WishedBooks = () => {
     console.log('wish book data', data?.data);
     setBookData(data?.data);
   }, [data]);
+
+  // Filter wishList data based on matching userEmail
+  const filteredWishList = bookData?.filter(
+    (item: any) => item.userEmail === email
+  );
+
   return (
     <div>
       <div className="w-[60vw] mx-auto ">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 my-8 gap-10">
-          {bookData?.map((d: any, index: number) => (
+          {filteredWishList?.map((d: any, index: number) => (
             <>
               <Link className="mx-auto " to={`/book-details/${d?.book?.id}`}>
                 <div key={index} className="border-[1px] rounded-lg">

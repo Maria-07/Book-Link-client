@@ -3,7 +3,10 @@ import { useState, useEffect } from 'react';
 import { useGetFilterWishListQuery } from '../../redux/features/books/booksApi';
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
+import CurrentUserEmail from '../../hook/CurrentUserEmail';
 const WishList = () => {
+  const email = CurrentUserEmail();
+
   const [status, setStatus] = useState('');
   const [filterBook, setFilterBook] = useState([]);
   const { data, isLoading, error } = useGetFilterWishListQuery(status);
@@ -14,6 +17,11 @@ const WishList = () => {
     console.log('wish book data', data?.data);
     setFilterBook(data?.data);
   }, [data]);
+
+  // Filter wishList data based on matching userEmail
+  const filteredWishList = filterBook?.filter(
+    (item: any) => item.userEmail === email
+  );
 
   return (
     <div>
@@ -40,7 +48,7 @@ const WishList = () => {
           {status ? (
             <div className="w-[60vw] mx-auto ">
               <div className="grid grid-cols-1 md:grid-cols-3  my-8 gap-5">
-                {filterBook?.map((d: any, index: number) => (
+                {filteredWishList?.map((d: any, index: number) => (
                   <>
                     <Link
                       className="mx-auto ml-10"

@@ -8,6 +8,11 @@ const bookApi = api.injectEndpoints({
       query: () => '/books',
       providesTags: ['newBook'],
     }),
+    //* get all books year
+    getBooksYear: builder.query({
+      query: () => '/books/years?sortBy=publicationDate',
+      providesTags: ['newBook'],
+    }),
 
     //* get single book
     singleBook: builder.query({
@@ -82,6 +87,7 @@ const bookApi = api.injectEndpoints({
         method: 'POST',
         body: { book, status },
       }),
+      invalidatesTags: ['newBook'],
     }),
 
     //* Get wishlist
@@ -111,4 +117,5 @@ export const {
   useAddToWishListMutation,
   useGetAllWishListQuery,
   useGetFilterWishListQuery,
+  useGetBooksYearQuery,
 } = bookApi;

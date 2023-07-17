@@ -1,4 +1,4 @@
-import bg from '../../assets/images/bg.jpg';
+import bg from '../../assets/images/bg.png';
 
 const HeroPart = () => {
   return (

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-import { Avatar, Dropdown, MenuProps, Tabs } from 'antd';
+import { Avatar, Dropdown, MenuProps, Tabs, notification } from 'antd';
 import {
   FaFacebookF,
   FaInstagram,
@@ -20,15 +20,25 @@ import TextArea from 'antd/es/input/TextArea';
 import DeleteBookModal from './DeleteBookModal';
 import UpdateBook from './UpdateBook';
 import { toast } from 'react-toastify';
+import CurrentUserEmail from '../../hook/CurrentUserEmail';
+import Loader from '../../shared/Loader';
 
 const SingleBookDetails = () => {
   const { id } = useParams();
-  // console.log(id);
+  const email = CurrentUserEmail();
+  console.log('userEmail', email);
+  const [api, contextHolder] = notification.useNotification();
+
+  const [wishButton, setWishButton] = useState(false);
 
   //! Single book query
-  const { data: book } = useSingleBookQuery(id, {
+  const {
+    data: book,
+    isLoading,
+    isSuccess,
+  } = useSingleBookQuery(id, {
     refetchOnMountOrArgChange: true,
-    pollingInterval: 500,
+    pollingInterval: 5000,
   });
 
   //! update book----------------------------------------------------------------
@@ -53,8 +63,18 @@ const SingleBookDetails = () => {
   });
 
   //! Post review
-  const [postReview, { isError, isLoading, isSuccess }] =
-    usePostReviewMutation();
+  const [postReview] = usePostReviewMutation();
+
+  if (isLoading) {
+    <Loader />;
+  }
+
+  if (isSuccess) {
+    // api.open({
+    //   message: `The book is successfully get`,
+    //   duration: 2,
+    // });
+  }
 
   // console.log(isError, isLoading, isSuccess, error);
 
@@ -82,17 +102,15 @@ const SingleBookDetails = () => {
     try {
       await addToWishList({ book: book?.data?.id, status: status });
 
-      toast.success(`Added to ${status} List`, {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000,
-        hideProgressBar: true,
+      api.open({
+        message: `This Book is added into wishList as ${status}`,
+        duration: 2,
       });
     } catch (error) {
-      console.error('Failed to add to Wish List:', error);
-      toast.error('Failed to add to Wish List', {
-        position: toast.POSITION.TOP_RIGHT,
-        autoClose: 3000,
-        hideProgressBar: true,
+      console.error('', error);
+      api.open({
+        message: 'Failed to add to Wish List',
+        duration: 2,
       });
     }
   };
@@ -103,6 +121,7 @@ const SingleBookDetails = () => {
         <button
           onClick={(status) => {
             handleAddToWishList('reading');
+            setWishButton(true);
           }}
         >
           Reading
@@ -115,6 +134,7 @@ const SingleBookDetails = () => {
         <button
           onClick={(status) => {
             handleAddToWishList('plan to read');
+            setWishButton(true);
           }}
         >
           Plan to read
@@ -127,6 +147,7 @@ const SingleBookDetails = () => {
         <button
           onClick={(status) => {
             handleAddToWishList('finished');
+            setWishButton(true);
           }}
         >
           Completed
@@ -139,6 +160,7 @@ const SingleBookDetails = () => {
   return (
     <>
       {' '}
+      {contextHolder}
       <div className="flex items-center justify-center gap-10 sm:flex-nowrap flex-wrap my-16">
         <div>
           <img
@@ -181,9 +203,18 @@ const SingleBookDetails = () => {
               Read Now
             </button>
             <Dropdown menu={{ items }}>
-              <a onClick={(e) => e.preventDefault()}>
-                <button>
-                  <FaRegBookmark className="mt-[6px] text-[38px] text-[#804769] p-2 border border-[#804769] rounded-sm shadow-sm hover:bg-[#804769] hover:text-secondary" />
+              <a
+                onClick={(e) => {
+                  e.preventDefault();
+                  setWishButton(!wishButton);
+                }}
+              >
+                <button title="Add To WishList">
+                  {!wishButton ? (
+                    <FaRegBookmark className="mt-[6px] text-[38px] text-[#804769] p-2 border border-[#804769] rounded-sm shadow-sm hover:bg-[#804769] hover:text-secondary" />
+                  ) : (
+                    <FaRegBookmark className="mt-[6px] text-[38px] text-[#fff] p-2 border border-[#804769] rounded-sm shadow-sm bg-[#804769] " />
+                  )}
                 </button>
               </a>
             </Dropdown>
@@ -201,20 +232,22 @@ const SingleBookDetails = () => {
             </div>
           </div>
 
-          <div className="my-10 flex items-center  gap-4">
-            <button
-              onClick={handleUpdateBook}
-              className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
-            >
-              Edit Book
-            </button>
-            <button
-              onClick={handleDeleteBook}
-              className="px-3 py-1 border border-gray-400 rounded-sm leading-7 shadow-md text-[15px] hover:bg-red-700 hover:text-secondary"
-            >
-              Delete
-            </button>
-          </div>
+          {book?.data?.userEmail === email && (
+            <div className="my-10 flex items-center  gap-4">
+              <button
+                onClick={handleUpdateBook}
+                className="px-3 py-1 border rounded-sm leading-7 text-[15px] bg-popover shadow-md hover:bg-[#804769] text-secondary"
+              >
+                Edit Book
+              </button>
+              <button
+                onClick={handleDeleteBook}
+                className="px-3 py-1 border border-gray-400 rounded-sm leading-7 shadow-md text-[15px] hover:bg-red-700 hover:text-secondary"
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       </div>
       {/* review part  */}

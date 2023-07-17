@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { useUpdateBookMutation } from '../../redux/features/books/booksApi';
 import { useState } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 interface props {
   id: any;
@@ -56,6 +57,7 @@ const UpdateBook = ({ id, book, handleClose, clicked }: props) => {
         closable={false}
         className="box"
       >
+        <ToastContainer />
         <div className="">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold tracking-tight">
